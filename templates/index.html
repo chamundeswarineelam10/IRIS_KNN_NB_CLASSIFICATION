@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iris Flower Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+        }
+
+        /* Profile Section */
+        .profile {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-align: center;
+        }
+
+        .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid green;
+        }
+
+        .profile h3 {
+            margin-top: 5px;
+            color: green;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 120px;
+        }
+
+        .left-box {
+            background: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            margin-right: 30px;
+        }
+
+        .right-box {
+            background: white;
+            padding: 20px;
+            width: 500px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        input, select {
+            width: 95%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        h2 {
+            color: green;
+        }
+
+        .metric-title {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        pre {
+            background: #f7f7f7;
+            padding: 10px;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Profile -->
+<div class="profile">
+    <img src="{{ url_for('static', filename='photo.jpeg') }}">
+    <h3>N V Chamundeswari</h3>
+</div>
+
+<div class="main-container">
+
+    <!-- LEFT SIDE -->
+    <div class="left-box">
+
+        <h1>Iris Flower Prediction</h1>
+
+        <form action="/predict" method="post">
+
+            <input type="text" name="sl" placeholder="Sepal Length" required>
+            <input type="text" name="sw" placeholder="Sepal Width" required>
+            <input type="text" name="pl" placeholder="Petal Length" required>
+            <input type="text" name="pw" placeholder="Petal Width" required>
+
+            <select name="model">
+                <option value="knn">KNN</option>
+                <option value="nb">Naive Bayes</option>
+            </select>
+
+            <br><br>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_text %}
+            <h2>Prediction: {{ prediction_text }}</h2>
+        {% endif %}
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    {% if train_accuracy %}
+    <div class="right-box">
+
+        <h2>Model Performance</h2>
+
+        <div class="metric-title">Train Accuracy:</div>
+        <p>{{ train_accuracy }}</p>
+
+        <div class="metric-title">Test Accuracy:</div>
+        <p>{{ test_accuracy }}</p>
+
+        <div class="metric-title">Train Confusion Matrix:</div>
+        <pre>{{ train_cm }}</pre>
+
+        <div class="metric-title">Test Confusion Matrix:</div>
+        <pre>{{ test_cm }}</pre>
+
+        <div class="metric-title">Train Classification Report:</div>
+        <pre>{{ train_report }}</pre>
+
+        <div class="metric-title">Test Classification Report:</div>
+        <pre>{{ test_report }}</pre>
+
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
